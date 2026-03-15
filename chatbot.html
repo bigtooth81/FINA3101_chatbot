@@ -248,12 +248,7 @@ let messages = [];   // full conversation history
   await loadChunks();
   addBotMessage(
     "Hello! I'm your FINA 3101 tutor.\n\n" +
-    "Ask me anything — concepts, formulas, practice problems, or exam prep. " +
-    "I'll answer using the textbook content.\n\n" +
-    (chunks.length === 0
-      ? "⚠️ Textbook index not loaded — answers will rely on general knowledge only. " +
-        "Run `process_pdf.py` and place `textbook_chunks.json` in the same folder as this file."
-      : `📚 Textbook index loaded (${chunks.length} sections).`)
+    "Ask me anything — concepts, formulas, practice problems, or exam prep."
   );
 })();
 
@@ -291,14 +286,14 @@ function buildSystem(contextChunks) {
     "George Washington University.\n\n" +
     "Guidelines:\n" +
     "• Answer clearly and at a level appropriate for undergraduate finance students.\n" +
-    "• When relevant, cite the textbook chapter or section.\n" +
+    "• When relevant, cite the chapter or section.\n" +
     "• For formulas, explain each variable.\n" +
     "• If the student seems confused, offer a simple numerical example.\n" +
     "• Be encouraging and pedagogical — guide them to understand, don't just give answers.\n" +
     "• If a question is outside the scope of the course, say so politely.\n";
 
   if (contextChunks.length > 0) {
-    sys += "\n---\nRelevant textbook excerpts (use these to ground your answer):\n\n";
+    sys += "\n---\nRelevant course material (use these to ground your answer):\n\n";
     contextChunks.forEach((c, i) => {
       sys += `[Excerpt ${i + 1}]\n${c}\n\n`;
     });
@@ -355,9 +350,7 @@ async function sendMessage() {
       const data = await response.json();
       const reply = data.choices?.[0]?.message?.content || "(no response)";
       removeTyping(typingId);
-      const sourceNote = context.length > 0
-        ? `\n\n[Sources: ${context.length} textbook section(s) used]`
-        : "";
+      const sourceNote = "";
       addBotMessage(reply + sourceNote);
       messages.push({ role: "assistant", content: reply });
     }
