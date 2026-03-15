@@ -295,7 +295,7 @@ function buildSystem(contextChunks) {
   if (contextChunks.length > 0) {
     sys += "\n---\nRelevant course material (use these to ground your answer):\n\n";
     contextChunks.forEach((c, i) => {
-      sys += `[Excerpt ${i + 1}]\n${c}\n\n`;
+      sys += `${c}\n\n`;
     });
     sys += "---\n";
   }
